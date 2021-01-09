@@ -1,0 +1,13 @@
+body{
+	background-color: #8F9779;
+	font-size: 22px;
+}
+main{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 35em;
+}
+form input, select{
+	padding: 7px;
+}
