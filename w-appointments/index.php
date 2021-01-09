@@ -1,5 +1,7 @@
 <?php
 
+require_once 'config/database/db.php';
+
 $start = 8;
 $end = 19;
 
@@ -7,6 +9,11 @@ $end = 19;
 if(isset($_POST['date']) && isset($_POST['time']))
 {
 	// check if the interval isn't taken --> if not book him else dont
+
+	echo '<pre>';
+	print_r($_POST['date']);
+	print_r($_POST['time']);
+	echo '</pre>';
 
 }
 else if(isset($_POST['date']) && !isset($_POST['time']))
