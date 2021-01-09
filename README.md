@@ -1,4 +1,4 @@
 # w-appointments
-Lightweight appointment system in pure PHP.
+A Lightweight hourly timeframe appointment system in pure PHP.
 
 
