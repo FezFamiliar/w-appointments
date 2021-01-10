@@ -1,23 +1,20 @@
 <?php
 
 
-const SERVER_NAME = 'localhost';
-const USERNAME = 'root';
-const PASSWORD = 'rot13';
-CONST DB_NAME = 'appointment';
+$SERVER_NAME = 'localhost';
+$USERNAME = 'root';
+$PASSWORD = '';
+$DB_NAME = 'booking';
 
 
 try
 {
-  $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  $conn = new PDO("mysql:host=$SERVER_NAME;dbname=$DB_NAME", $USERNAME, $PASSWORD);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } 
 catch(PDOException $e)
 {
   echo 'Connection failed: ' . $e->getMessage();
 }
-
-$conn = null;
-
 
 ?>

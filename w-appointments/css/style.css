@@ -11,3 +11,13 @@ main{
 form input, select{
 	padding: 7px;
 }
+.error-msg
+{
+	color:coral;
+	text-align:center;
+}
+.scs-msg
+{
+	color:green;
+	text-align:center;
+}

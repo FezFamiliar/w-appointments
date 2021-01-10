@@ -4,30 +4,50 @@ require_once 'config/database/db.php';
 
 $start = 8;
 $end = 19;
+$error = '';
+$scs = '';
 
-
-if(isset($_POST['date']) && isset($_POST['time']))
+if($_POST['date'] && $_POST['time'])
 {
-	// check if the interval isn't taken --> if not book him else dont
+	if(strtotime($_POST['date']) && is_numeric($_POST['time']))
+	{
+		$interval = $_POST['date'] . ' ' . $_POST['time'];
 
-	echo '<pre>';
-	print_r($_POST['date']);
-	print_r($_POST['time']);
-	echo '</pre>';
+		$sql = "SELECT * FROM appointments WHERE time_interval = '$interval'";
+		$stmt = $conn->query($sql);
+		$occupy = $stmt->fetch(PDO::FETCH_ASSOC);
 
+		if($occupy)
+		{
+			$error = 'That timeframe is occupied!';
+		}
+		else
+		{
+			$sql = "INSERT INTO appointments (time_interval) VALUES (:interval)";
+			$stmt = $conn->prepare($sql);
+		
+			$stmt->bindParam(':interval', $interval);
+		
+			if($stmt->execute())
+			{
+				$scs = 'book successfull!';
+			}
+		}
+	}
+	else
+	{
+		$error = 'try harder ;)';
+	}
 }
-else if(isset($_POST['date']) && !isset($_POST['time']))
+else if($_POST['date'] && !$_POST['time'])
 {
-	// you need to fill in time
+	$error = 'you need to fill in time';
 }
-else if(!isset($_POST['date']) && isset($_POST['time']))
+else if(!$_POST['date'] && $_POST['time'])
 {
-	// you need to fill in date
+	$error = 'you need to fill in date';
 }
-
-
 ?>
-
 
 
 <!DOCTYPE html>
@@ -38,15 +58,21 @@ else if(!isset($_POST['date']) && isset($_POST['time']))
 </head>
 <body>
 	<main>
-		<form method="POST" disabled>
-			
+
+		<form method="POST">
+			<?php if($error): ?>
+				<h2 class="error-msg"><?php echo $error; ?></h2>
+			<?php elseif($scs): ?>
+				<h2 class="scs-msg"><?php echo $scs;?></h2>
+			<?php endif; ?>
 			Date: <input type="date" name="date">
 			<br><br>
 			Time:
 			<select name="time">
+				<option value="">Enter a time interval</option>
 				<?php for($i = $start; $i <= $end; ++$i): ?>
 
-					<option value=<?php echo $i; ?>><?php echo $i . ':00 - ' . $i + 1 . ':00' ?></option>
+					<option value=<?php echo $i; ?>><?php echo $i . ':00 - ' . ($i + 1) . ':00' ?></option>
 
 				<?php endfor; ?>
 			</select>
